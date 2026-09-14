@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
 import datetime
 import pandas as pd
 from pathlib import Path
@@ -20,15 +19,6 @@ motivasyon_sozleri = [
 st.title("🩺 Babam İçin Kapsamlı Diyabet & Sağlık Asistanı")
 st.info(random.choice(motivasyon_sozleri))
 
-# Google Sheets bağlantısı
-conn = st.connection("gsheets", type=GSheetsConnection)
-
-try:
-    existing_data = conn.read(worksheet="Sayfa1", usecols=list(range(6)), ttl=5)
-    existing_data = existing_data.dropna(how="all")
-except:
-    existing_data = None
-
 # Sekmeler
 tab1, tab2, tab3, tab4 = st.tabs([
     "🩸 Kan Tahlili, Öneriler & Uzman Yorumu", 
@@ -40,7 +30,6 @@ tab1, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.subheader("🩸 Kan Tahlili Sonuçları ve Ek Hastalık Girişi")
     
-    # Form yapısını daha kararlı hale getirdik
     tarih_tahlil = st.date_input("Tahlil Tarihi", datetime.date.today(), key="tahlil_tarihi_input")
     
     ek_hastaliklar = st.multiselect(
@@ -55,9 +44,9 @@ with tab1:
     
     klinik_not = st.text_area("Ekstra Doktor Notu / Açıklama", key="klinik_not_input")
     
-    kaydet_tاديه = st.button("Tahlil Sonucunu Kaydet ve Analiz Et 💾", key="tahlil_kaydet_btn")
+    kaydet_tahlil = st.button("Tahlil Sonucunu Kaydet ve Analiz Et 💾", key="tahlil_kaydet_btn")
         
-    if kaydet_tاديه:
+    if kaydet_tahlil:
         st.success("Tahlil sonuçları başarıyla işlendi ve analiz edildi!")
         
     st.divider()
